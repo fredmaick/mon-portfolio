@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Fred Maick Nzenzeki</title>
+<style>
+  :root{
+    --bg:#0b0f1a;
+    --bg2:#121826;
+    --card:#161f30;
+    --accent:#4f9dff;
+    --accent2:#7c5cff;
+    --text:#e8ecf5;
+    --muted:#8b96ab;
+    --border:#233047;
+    --nav-height: 70px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:linear-gradient(180deg,var(--bg),var(--bg2));
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:0 6%;
+    height: var(--nav-height);
+    background:rgba(11,15,26,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .logo{font-weight:700;font-size:1.1rem;letter-spacing:1px;color:var(--accent);}
+  nav ul{display:flex;gap:28px;list-style:none;}
+  nav a{color:var(--muted);text-decoration:none;font-size:0.92rem;transition:color .2s;}
+  nav a:hover{color:var(--text);}
+
+  /* Offset global pour éviter le chevauchement sous le menu fixe */
+  section{
+    padding:calc(var(--nav-height) + 40px) 6% 60px;
+    max-width:1100px;
+    margin:0 auto;
+    scroll-margin-top: var(--nav-height);
+  }
+
+  /* HERO */
+  #hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    position:relative;
+    padding-top: var(--nav-height);
+  }
+  #hero::before{
+    content:'';position:absolute;top:-10%;right:-10%;width:500px;height:500px;
+    background:radial-gradient(circle,rgba(79,157,255,0.15),transparent 70%);
+    border-radius:50%;filter:blur(40px);z-index:-1;
+    animation:float 8s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(30px);}}
+  .tag{
+    display:inline-block;padding:6px 14px;border:1px solid var(--accent);
+    border-radius:20px;color:var(--accent);font-size:0.8rem;margin-bottom:20px;
+    width:fit-content;opacity:0;animation:fadeUp .8s .1s forwards;
+  }
+  #hero h1{
+    font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;line-height:1.15;
+    background:linear-gradient(90deg,var(--text),var(--accent));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    opacity:0;animation:fadeUp .8s .25s forwards;
+  }
+  #hero p.subtitle{
+    color:var(--muted);font-size:1.1rem;margin-top:16px;max-width:600px;
+    opacity:0;animation:fadeUp .8s .4s forwards;
+  }
+  .hero-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:26px;
+    opacity:0;animation:fadeUp .8s .55s forwards;}
+  .hero-meta span{color:var(--muted);font-size:0.88rem;display:flex;align-items:center;gap:6px;}
+  .btn-row{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap;
+    opacity:0;animation:fadeUp .8s .7s forwards;}
+  .btn{
+    padding:12px 26px;border-radius:8px;font-size:0.92rem;font-weight:600;
+    text-decoration:none;cursor:pointer;transition:transform .2s, box-shadow .2s;border:none;
+    display:inline-block;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,157,255,0.35);}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);background:transparent;}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+  /* SECTION TITLES */
+  h2.stitle{font-size:1.8rem;font-weight:700;margin-bottom:8px;}
+  p.slead{color:var(--muted);margin-bottom:36px;}
+  .accent-bar{width:44px;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;margin-bottom:14px;}
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+  .skill-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;
+    transition:transform .25s, border-color .25s;
+  }
+  .skill-card:hover{transform:translateY(-4px);border-color:var(--accent);}
+  .skill-card h3{font-size:1rem;color:var(--accent);margin-bottom:10px;}
+  .skill-card ul{list-style:none;color:var(--muted);font-size:0.86rem;}
+  .skill-card li{padding:3px 0;position:relative;padding-left:14px;}
+  .skill-card li::before{content:'▸';position:absolute;left:0;color:var(--accent2);}
+
+  /* EXPERIENCE TIMELINE */
+  .timeline{position:relative;padding-left:28px;border-left:2px solid var(--border);}
+  .titem{position:relative;margin-bottom:38px;cursor:pointer;user-select:none;}
+  .titem::before{
+    content:'';position:absolute;left:-35px;top:4px;width:14px;height:14px;border-radius:50%;
+    background:var(--bg2);border:3px solid var(--accent);transition:background .2s;
+  }
+  .titem:hover::before{background:var(--accent);}
+  .titem h3{font-size:1.1rem;transition:color .2s;}
+  .titem:hover h3{color:var(--accent);}
+  .titem .period{color:var(--accent);font-size:0.82rem;margin:4px 0 10px;}
+  .titem .details{
+    max-height:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease;
+    color:var(--muted);font-size:0.88rem;opacity:0;
+  }
+  .titem.open .details{max-height:600px;margin-top:10px;opacity:1;}
+  .titem ul{padding-left:18px;}
+  .titem li{margin-bottom:5px;}
+  .expand-hint{font-size:0.78rem;color:var(--accent2);margin-top:6px;}
+
+  /* PROJECT */
+  .project-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;
+    display:grid;grid-template-columns:1fr;gap:18px;
+  }
+  .project-card h3{font-size:1.2rem;color:var(--text);}
+  .project-card .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;}
+  .badge{background:rgba(79,157,255,0.12);color:var(--accent);padding:4px 12px;border-radius:14px;font-size:0.78rem;}
+  .project-card ul{color:var(--muted);padding-left:18px;font-size:0.9rem;}
+  .project-card li{margin-bottom:6px;}
+  .project-card a{color:var(--accent2);font-size:0.88rem;display:inline-block;margin-top:10px;text-decoration:none;}
+  .project-card a:hover{text-decoration:underline;}
+
+  /* EDUCATION / CERTS */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;}
+  .box h3{color:var(--accent);font-size:1rem;margin-bottom:14px;}
+  .box .entry{margin-bottom:14px;}
+  .box .entry strong{display:block;font-size:0.92rem;}
+  .box .entry span{color:var(--muted);font-size:0.82rem;}
+
+  /* CONTACT */
+  #contact{text-align:center;padding-bottom:100px;}
+  .contact-grid{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:30px;}
+  .contact-item{
+    background:var(--card);border:1px solid var(--border);padding:18px 26px;border-radius:12px;
+    min-width:200px;transition:border-color .2s, transform .2s;text-decoration:none;color:inherit;
+  }
+  .contact-item:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .contact-item .label{color:var(--muted);font-size:0.78rem;margin-bottom:4px;}
+  .contact-item .value{font-size:0.92rem;font-weight:600;}
+
+  footer{text-align:center;padding:24px;color:var(--muted);font-size:0.78rem;border-top:1px solid var(--border);}
+
+  ::selection{background:var(--accent);color:#fff;}
+
+  /* MEDIA QUERIES */
+  @media(max-width:768px){
+    nav ul{display:none;} /* Possibilité d'ajouter un menu burger au besoin */
+    .two-col{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">F.M. NZENZEKI</div>
+  <ul>
+    <li><a href="#hero">Accueil</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#exp">Expérience</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="tag">Disponible immédiatement</div>
+  <h1>Fred Maick Nzenzeki</h1>
+  <p class="subtitle">Senior IT • Business Analyst • IT Project Manager • Digital Transformation Lead — j'accompagne les organisations dans leur transformation digitale, de l'analyse des besoins métiers jusqu'au déploiement de solutions ERP et web sur mesure.</p>
+  <div class="hero-meta">
+    <span>📍 Kinshasa, RDC</span>
+    <span>🎓 BAC+5 Génie Informatique</span>
+    <span>💼 6+ ans d'expérience</span>
+    <span>🗣️ FR (C2) · EN (B1) · Lingala (C2)</span>
+  </div>
+  <div class="btn-row">
+    <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+    <a href="#contact" class="btn btn-ghost">Me contacter</a>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="accent-bar"></div>
+  <h2 class="stitle">Compétences techniques</h2>
+  <p class="slead">Un socle large entre gestion de projet IT, transformation digitale et développement web.</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <h3>Gestion de projet & Business Analysis</h3>
+      <ul>
+        <li>Analyse des besoins métiers</li>
+        <li>Méthodologie Agile Scrum</li>
+        <li>User Stories & exigences fonctionnelles</li>
+        <li>Cartographie As-Is / To-Be</li>
+        <li>Accompagnement du changement</li>
+      </ul>
+    </div>
+    <div class="skill-card">
+      <h3>Gouvernance & Pilotage</h3>
+      <ul>
+        <li>Gouvernance des SI</li>
+        <li>Gestion des risques IT</li>
+        <li>Reporting exécutif</li>
+        <li>Suivi budgétaire IT</li>
+      </ul>
+    </div>
+    <div class="skill-card">
+      <h3>Data & Décision</h3>
+      <ul>
+        <li>KPI & tableaux de bord</li>
+        <li>Excel avancé</li>
+        <li>Power BI</li>
+        <li>Analyse de données opérationnelles</li>
+      </ul>
+    </div>
+    <div class="skill-card">
+      <h3>Développement & Web</h3>
+      <ul>
+        <li>API REST & SQL</li>
+        <li>Sites responsive multilingues</li>
+        <li>Git</li>
+        <li>Optimisation & référencement</li>
+      </ul>
+    </div>
+    <div class="skill-card">
+      <h3>Infrastructure & Réseaux</h3>
+      <ul>
+        <li>Windows Server & Active Directory</li>
+        <li>LAN/WAN, VLAN, VPN, DNS, DHCP</li>
+        <li>Sécurité & sauvegardes</li>
+        <li>Supervision infrastructure IT</li>
+      </ul>
+    </div>
+    <div class="skill-card">
+      <h3>ERP & Outils collaboratifs</h3>
+      <ul>
+        <li>Odoo, SAP MM, Dolibarr</li>
+        <li>Microsoft 365 (Teams, SharePoint, Exchange)</li>
+        <li>Gestion de bases de données</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="exp">
+  <div class="accent-bar"></div>
+  <h2 class="stitle">Expérience professionnelle</h2>
+  <p class="slead">Clique sur une expérience pour voir le détail.</p>
+  <div class="timeline">
+    <div class="titem" onclick="toggleTimeline(this)" tabindex="0">
+      <h3>IT Business & Digital Transformation Lead — Cabinet AGeC SARL</h3>
+      <div class="period">Mars 2020 – Présent · Kinshasa, RDC</div>
+      <div class="expand-hint">Cliquer pour développer ▾</div>
+      <div class="details">
+        <ul>
+          <li>Gestion et supervision de l'infrastructure IT, systèmes et réseaux</li>
+          <li>Gestion de portefeuille de projets IT et des risques associés</li>
+          <li>Conception et déploiement d'un ERP Dolibarr et d'une GED avec Workflow</li>
+          <li>Suivi des KPI, tableaux de bord exécutifs et reporting IT</li>
+          <li><strong>Résultats clés :</strong> disponibilité IT > 99%, productivité opérationnelle +20 à 30%</li>
+        </ul>
+      </div>
+    </div>
+    <div class="titem" onclick="toggleTimeline(this)" tabindex="0">
+      <h3>Consultant SI, Business Analysis & Transformation Digitale — G.S. VALMAF</h3>
+      <div class="period">Juillet 2019 – Décembre 2024 (temps partiel) · Kinshasa, RDC</div>
+      <div class="expand-hint">Cliquer pour développer ▾</div>
+      <div class="details">
+        <ul>
+          <li>Recueil et formalisation des besoins métiers</li>
+          <li>Implémentation de solutions ERP et digitales</li>
+          <li>Conception et développement du site web institutionnel AGeC SARL (responsive, multilingue)</li>
+          <li>Accompagnement des utilisateurs et conduite du changement</li>
+        </ul>
+      </div>
+    </div>
+    <div class="titem" onclick="toggleTimeline(this)" tabindex="0">
+      <h3>Projet SAP MM — Digitalisation Procure-to-Pay</h3>
+      <div class="period">Cabinet AGeC SARL</div>
+      <div class="expand-hint">Cliquer pour développer ▾</div>
+      <div class="details">
+        <ul>
+          <li>Analyse fonctionnelle des processus Achats et Approvisionnement</li>
+          <li>Coordination des tests utilisateurs (UAT)</li>
+          <li>Contrôle qualité des données de référence et gestion des incidents fonctionnels</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="accent-bar"></div>
+  <h2 class="stitle">Projet phare</h2>
+  <p class="slead">Réalisation technique mise en avant.</p>
+  <div class="project-card">
+    <h3>🌐 Site officiel AGeC SARL</h3>
+    <div class="badge-row">
+      <span class="badge">Responsive</span>
+      <span class="badge">Multilingue</span>
+      <span class="badge">SEO</span>
+      <span class="badge">CMS dynamique</span>
+    </div>
+    <ul>
+      <li>Conception et développement complet du site web institutionnel</li>
+      <li>Architecture responsive et multilingue pour une audience internationale</li>
+      <li>Optimisation des performances et du référencement naturel</li>
+      <li>Gestion dynamique des contenus et maintenance technique continue</li>
+    </ul>
+    <a href="https://agec-rdc.com" target="_blank" rel="noopener noreferrer">🔗 Voir le site web AGeC SARL</a>
+  </div>
+</section>
+
+<section id="education">
+  <div class="accent-bar"></div>
+  <h2 class="stitle">Formation & certifications</h2>
+  <div class="two-col">
+    <div class="box">
+      <h3>🎓 Formation académique</h3>
+      <div class="entry">
+        <strong>Licence (BAC+5) – Génie Informatique</strong>
+        <span>Université de Kinshasa, Faculté des Sciences · 2014 – 2021</span>
+      </div>
+      <div class="entry">
+        <strong>Baccalauréat, série C</strong>
+        <span>Lycée E.P. Lumumba, Brazzaville · 2011 – 2014</span>
+      </div>
+    </div>
+    <div class="box">
+      <h3>📜 Certifications</h3>
+      <div class="entry">
+        <strong>Conception et animation de formations interactives</strong>
+        <span>FUN MOOC, Nov. 2023</span>
+      </div>
+      <div class="entry">
+        <strong>Développement web/web-mobile</strong>
+        <span>KADEA Academy, 2023 – 2024</span>
+      </div>
+      <div class="entry">
+        <strong>Cybersécurité & Protection des données</strong>
+        <span>OpenClassrooms, Juil. 2024</span>
+      </div>
+      <div class="entry">
+        <strong>En préparation</strong>
+        <span>Azure Fundamentals · AWS Fundamentals · PRINCE2 · ITIL · CCNA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="accent-bar" style="margin:0 auto 14px;"></div>
+  <h2 class="stitle">Contact</h2>
+  <p class="slead">Disponible immédiatement — n'hésitez pas à me contacter.</p>
+  <div class="contact-grid">
+    <a href="mailto:nzenzekif@gmail.com" class="contact-item">
+      <div class="label">Email</div>
+      <div class="value">nzenzekif@gmail.com</div>
+    </a>
+    <a href="tel:+243828689011" class="contact-item">
+      <div class="label">Téléphone</div>
+      <div class="value">+243 828 689 011</div>
+    </a>
+    <div class="contact-item">
+      <div class="label">Localisation</div>
+      <div class="value">Kinshasa, RDC</div>
+    </div>
+    <div class="contact-item">
+      <div class="label">Langues</div>
+      <div class="value">FR · EN · Lingala</div>
+    </div>
+  </div>
+</section>
+
+<footer>Portfolio — Fred Maick Nzenzeki · Mis à jour Juillet 2026</footer>
+
+<script>
+function toggleTimeline(element) {
+  element.classList.toggle('open');
+  const hint = element.querySelector('.expand-hint');
+  if (element.classList.contains('open')) {
+    hint.textContent = 'Cliquer pour réduire ▴';
+  } else {
+    hint.textContent = 'Cliquer pour développer ▾';
+  }
+}
+</script>
+
+</body>
+</html>
